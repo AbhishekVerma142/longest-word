@@ -2,6 +2,7 @@
 # pylint: disable=too-few-public-methods
 import string
 import random
+import requests
 
 class Game:
     '''
@@ -23,4 +24,13 @@ class Game:
                 letters.remove(letter)
             else:
                 return False
-        return True
+
+        is_english = self.__check_dictionary(word)
+        return is_english
+
+
+    @staticmethod
+    def __check_dictionary(word):
+        response = requests.get(f"https://dictionary.lewagon.com/{word}")
+        json_response = response.json()
+        return json_response['found']
